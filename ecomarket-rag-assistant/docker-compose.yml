@@ -1,0 +1,37 @@
+# docker-compose.yml
+services:
+  ollama:
+    image: ollama/ollama:latest          # <- string OK
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]    # no usa curl/wget
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+
+  pedidos-app:
+    # usa build del Dockerfile local (alternativa: image: pedidos-app:latest)
+    build: .
+    container_name: pedidos-app
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+      - ./.cache/huggingface:/app/.cache/huggingface
+    restart: unless-stopped
+
+volumes:
+  ollama: {}
+

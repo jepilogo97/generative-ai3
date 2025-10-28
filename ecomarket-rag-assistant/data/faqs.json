@@ -1,0 +1,63 @@
+[
+    {
+      "id": 1,
+      "categoria": "Pedidos",
+      "pregunta": "¿Cuánto tarda en llegar mi pedido?",
+      "respuesta": "El tiempo de entrega depende del destino y del tipo de envío seleccionado. Los pedidos estándar suelen tardar entre 2 y 5 días hábiles. Puedes hacer seguimiento en la sección 'Mis pedidos' o consultar con el número de seguimiento proporcionado."
+    },
+    {
+      "id": 2,
+      "categoria": "Pedidos",
+      "pregunta": "¿Qué hago si mi pedido llega incompleto?",
+      "respuesta": "Si tu pedido llega incompleto, revisa si los productos restantes tienen una fecha de envío distinta. Si no, contacta a nuestro equipo de soporte con tu número de pedido para gestionar la reposición o el reembolso."
+    },
+    {
+      "id": 3,
+      "categoria": "Devoluciones",
+      "pregunta": "¿Cómo puedo devolver un producto?",
+      "respuesta": "Puedes solicitar la devolución desde la sección 'Mis pedidos' en tu cuenta. El producto debe estar en su empaque original y sin uso. Un agente validará tu solicitud y te enviará una guía de envío para la devolución."
+    },
+    {
+      "id": 4,
+      "categoria": "Devoluciones",
+      "pregunta": "¿Qué productos no tienen devolución?",
+      "respuesta": "Los productos de tipo 'Alimento perecedero', 'Higiene personal' y 'Medicamentos' no tienen devolución por razones de seguridad sanitaria. Esta política está alineada con la regulación sanitaria vigente."
+    },
+    {
+      "id": 5,
+      "categoria": "Pagos",
+      "pregunta": "¿Qué métodos de pago aceptan?",
+      "respuesta": "Aceptamos tarjetas de crédito, débito, PSE, y billeteras digitales como Nequi y Daviplata. También puedes pagar contra entrega en algunas zonas."
+    },
+    {
+      "id": 6,
+      "categoria": "Pagos",
+      "pregunta": "¿Qué hago si mi pago fue rechazado?",
+      "respuesta": "Si tu pago fue rechazado, verifica que tu método de pago esté habilitado y tenga fondos disponibles. También puedes intentar nuevamente con otro método o comunicarte con tu entidad bancaria."
+    },
+    {
+      "id": 7,
+      "categoria": "Cuenta",
+      "pregunta": "¿Cómo puedo cambiar mi dirección de entrega?",
+      "respuesta": "Puedes editar o agregar direcciones en la sección 'Mi cuenta' → 'Direcciones'. Si el pedido ya está en tránsito, no se puede modificar la dirección de entrega."
+    },
+    {
+      "id": 8,
+      "categoria": "Cuenta",
+      "pregunta": "Olvidé mi contraseña, ¿cómo puedo recuperarla?",
+      "respuesta": "En la pantalla de inicio de sesión, selecciona '¿Olvidaste tu contraseña?' y sigue las instrucciones para restablecerla. Recibirás un correo con el enlace de recuperación."
+    },
+    {
+      "id": 9,
+      "categoria": "Sostenibilidad",
+      "pregunta": "¿EcoMarket utiliza empaques reciclables?",
+      "respuesta": "Sí. Todos nuestros empaques están hechos con materiales reciclados o reciclables, y fomentamos la devolución de empaques reutilizables en pedidos seleccionados."
+    },
+    {
+      "id": 10,
+      "categoria": "Atención al cliente",
+      "pregunta": "¿Cómo puedo comunicarme con atención al cliente?",
+      "respuesta": "Puedes escribirnos a soporte@ecomarket.com o usar el chat en línea disponible de lunes a sábado de 8:00 a 20:00. También puedes generar un ticket desde la app."
+    }
+  ]
+  

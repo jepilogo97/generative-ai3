@@ -1,0 +1,632 @@
+[
+  {
+    "tracking_number": "20001",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-01",
+    "destino": "Bogotá, Colombia",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20001",
+    "cliente": "Carlos López",
+    "peso_kg": 2.5,
+    "valor_usd": 85.0,
+    "productos": [
+      {
+        "nombre": "Auriculares Bluetooth",
+        "categoria": "Electrónica",
+        "dev_aceptada": true
+      },
+      {
+        "nombre": "Camiseta algodón",
+        "categoria": "Ropa",
+        "dev_aceptada": true
+      },
+      {
+        "nombre": "Paquete de Almojabanas", 
+        "categoria": "Alimento perecedero",
+        "dev_aceptada": false
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20002",
+    "estado": "Entregado",
+    "fecha_estimada": "2025-09-22",
+    "destino": "Medellín, Colombia",
+    "transportadora": "FedEx",
+    "enlace_rastreo": "https://www.fedex.com/fedextrack/?trknbr=20002",
+    "cliente": "Ana Rodríguez",
+    "peso_kg": 1.2,
+    "valor_usd": 45.9,
+    "fecha_entrega_real": "2025-09-22",
+    "productos": [
+      {
+        "nombre": "Perfume floral",
+        "categoria": "Higiene",
+        "dev_aceptada": false
+      }
+    ],
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20003",
+    "estado": "Pendiente de envío",
+    "fecha_estimada": "2025-10-05",
+    "destino": "Cali, Colombia",
+    "transportadora": "UPS",
+    "enlace_rastreo": "https://www.ups.com/track?loc=es_CO&tracknum=20003",
+    "cliente": "Miguel Herrera",
+    "peso_kg": 3.1,
+    "valor_usd": 120.75,
+    "productos": [
+      {
+        "nombre": "Laptop 14 pulgadas",
+        "categoria": "Electrónica",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20004",
+    "estado": "Retrasado",
+    "fecha_estimada": "2025-10-07",
+    "destino": "Barranquilla, Colombia",
+    "transportadora": "Servientrega",
+    "enlace_rastreo": "https://www.servientrega.com/track?guia=20004",
+    "cliente": "Laura González",
+    "peso_kg": 0.8,
+    "valor_usd": 30.5,
+    "motivo_retraso": "Condiciones climáticas",
+    "productos": [
+      {
+        "nombre": "Yogur griego",
+        "categoria": "Alimento perecedero",
+        "dev_aceptada": false
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20005",
+    "estado": "En preparación",
+    "fecha_estimada": "2025-10-02",
+    "destino": "Cartagena, Colombia",
+    "transportadora": "Deprisa",
+    "enlace_rastreo": "https://www.deprisa.com/seguimiento?guia=20005",
+    "cliente": "Javier Ramírez",
+    "peso_kg": 5.0,
+    "valor_usd": 210.0,
+    "productos": [
+      {
+        "nombre": "Set de vasos",
+        "categoria": "Hogar",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20006",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-03",
+    "destino": "Pereira, Colombia",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20006",
+    "cliente": "Paola Castro",
+    "peso_kg": 1.7,
+    "valor_usd": 60.2,
+    "productos": [
+      {
+        "nombre": "Zapatos deportivos",
+        "categoria": "Ropa",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20007",
+    "estado": "Entregado",
+    "fecha_estimada": "2025-09-20",
+    "destino": "Bucaramanga, Colombia",
+    "transportadora": "FedEx",
+    "enlace_rastreo": "https://www.fedex.com/fedextrack/?trknbr=20007",
+    "cliente": "Felipe Mendoza",
+    "peso_kg": 0.9,
+    "valor_usd": 35.0,
+    "fecha_entrega_real": "2025-09-20",
+    "productos": [
+      {
+        "nombre": "Juego de cubiertos",
+        "categoria": "Hogar",
+        "dev_aceptada": true
+      }
+    ],
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20008",
+    "estado": "Listo para recoger",
+    "fecha_estimada": "2025-10-01",
+    "destino": "Manizales, Colombia",
+    "transportadora": "Coordinadora",
+    "enlace_rastreo": "https://www.coordinadora.com/seguimiento?guia=20008",
+    "cliente": "Lucía Martínez",
+    "peso_kg": 2.0,
+    "valor_usd": 55.4,
+    "punto_retiro": "Sucursal Centro",
+    "productos": [
+      {
+        "nombre": "Reloj de pulsera",
+        "categoria": "Accesorios",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": ""
+  },
+  {
+    "tracking_number": "20009",
+    "estado": "Cancelado",
+    "fecha_estimada": "2025-09-25",
+    "destino": "Cúcuta, Colombia",
+    "transportadora": "Servientrega",
+    "enlace_rastreo": "https://www.servientrega.com/track?guia=20009",
+    "cliente": "Andrés Pérez",
+    "peso_kg": 4.3,
+    "valor_usd": 150.0,
+    "motivo_cancelacion": "Solicitud del cliente",
+    "productos": [
+      {
+        "nombre": "Televisor 32\"",
+        "categoria": "Electrónica",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20010",
+    "estado": "En aduana",
+    "fecha_estimada": "2025-10-05",
+    "destino": "Lima, Perú",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20010",
+    "cliente": "Valentina Ortiz",
+    "peso_kg": 3.8,
+    "valor_usd": 180.9,
+    "productos": [
+      {
+        "nombre": "Cámara digital",
+        "categoria": "Electrónica",
+        "dev_aceptada": true
+      }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20011",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-06",
+    "destino": "Quito, Ecuador",
+    "transportadora": "UPS",
+    "enlace_rastreo": "https://www.ups.com/track?loc=es_CO&tracknum=20011",
+    "cliente": "Rodrigo Silva",
+    "peso_kg": 2.4,
+    "valor_usd": 99.5,
+    "productos": [
+      { "nombre": "Chaqueta impermeable", 
+        "categoria": "Ropa", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20012",
+    "estado": "Preparando documentación",
+    "fecha_estimada": "2025-10-07",
+    "destino": "Buenos Aires, Argentina",
+    "transportadora": "FedEx",
+    "enlace_rastreo": "https://www.fedex.com/fedextrack/?trknbr=20012",
+    "cliente": "Camila Díaz",
+    "peso_kg": 6.2,
+    "valor_usd": 250.0,
+    "productos": [
+      { "nombre": "Colección de libros", 
+        "categoria": "Libros", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20013",
+    "estado": "Retrasado",
+    "fecha_estimada": "2025-10-04",
+    "destino": "Guadalajara, México",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20013",
+    "cliente": "María Fernanda Torres",
+    "peso_kg": 1.4,
+    "valor_usd": 70.5,
+    "productos": [
+      { "nombre": "Paquete de café gourmet", 
+        "categoria": "Alimento perecedero",
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "Demoras en aduana",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20014",
+    "estado": "Entregado",
+    "fecha_estimada": "2025-09-22",
+    "destino": "Ciudad de México, México",
+    "transportadora": "FedEx",
+    "enlace_rastreo": "https://www.fedex.com/fedextrack/?trknbr=20014",
+    "cliente": "Diego Sánchez",
+    "peso_kg": 2.3,
+    "valor_usd": 95.0,
+    "productos": [
+      { "nombre": "Auriculares gamer", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "2025-09-22",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20015",
+    "estado": "En aduana",
+    "fecha_estimada": "2025-10-06",
+    "destino": "Santiago, Chile",
+    "transportadora": "UPS",
+    "enlace_rastreo": "https://www.ups.com/track?loc=es_CO&tracknum=20015",
+    "cliente": "Carolina Paredes",
+    "peso_kg": 3.5,
+    "valor_usd": 140.25,
+    "productos": [
+      { "nombre": "Juego de sábanas", 
+        "categoria": "Hogar", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20016",
+    "estado": "Retrasado",
+    "fecha_estimada": "2025-10-05",
+    "destino": "Monterrey, México",
+    "transportadora": "Estafeta",
+    "enlace_rastreo": "https://www.estafeta.com/seguimiento?guia=20016",
+    "cliente": "José Luis Herrera",
+    "peso_kg": 1.1,
+    "valor_usd": 50.0,
+    "productos": [
+      { "nombre": "Flores frescas", 
+        "categoria": "Alimento perecedero", 
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "Problemas de transporte terrestre",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20017",
+    "estado": "Listo para recoger",
+    "fecha_estimada": "2025-09-29",
+    "destino": "San José, Costa Rica",
+    "transportadora": "Correos de Costa Rica",
+    "enlace_rastreo": "https://correos.go.cr/rastreo?guia=20017",
+    "cliente": "Gabriela Rojas",
+    "peso_kg": 0.9,
+    "valor_usd": 32.4,
+    "productos": [
+      { "nombre": "Reloj inteligente", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": "Sucursal Central"
+  },
+  {
+    "tracking_number": "20018",
+    "estado": "En preparación",
+    "fecha_estimada": "2025-10-01",
+    "destino": "Panamá, Panamá",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20018",
+    "cliente": "Luis Miguel Álvarez",
+    "peso_kg": 2.8,
+    "valor_usd": 110.0,
+    "productos": [
+      { "nombre": "Juego de toallas", 
+        "categoria": "Hogar", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20019",
+    "estado": "Pendiente de envío",
+    "fecha_estimada": "2025-10-03",
+    "destino": "Quito, Ecuador",
+    "transportadora": "Servientrega",
+    "enlace_rastreo": "https://www.servientrega.com/track?guia=20019",
+    "cliente": "Natalia Ortiz",
+    "peso_kg": 4.0,
+    "valor_usd": 165.75,
+    "productos": [
+      { "nombre": "Chocolate artesanal", 
+        "categoria": "Alimento perecedero", 
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20020",
+    "estado": "Cancelado",
+    "fecha_estimada": "2025-09-27",
+    "destino": "Caracas, Venezuela",
+    "transportadora": "MRW",
+    "enlace_rastreo": "https://www.mrw.com.ve/seguimiento?guia=20020",
+    "cliente": "Ricardo Fernández",
+    "peso_kg": 5.2,
+    "valor_usd": 200.0,
+    "productos": [
+      { "nombre": "Tablet 10\"", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "Pago no confirmado",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20021",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-02",
+    "destino": "Lima, Perú",
+    "transportadora": "Olva Courier",
+    "enlace_rastreo": "https://www.olvacourier.com/seguimiento?guia=20021",
+    "cliente": "Verónica Campos",
+    "peso_kg": 3.1,
+    "valor_usd": 120.0,
+    "productos": [
+      { "nombre": "Chaqueta de cuero", 
+        "categoria": "Ropa", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20022",
+    "estado": "Entregado",
+    "fecha_estimada": "2025-09-24",
+    "destino": "Buenos Aires, Argentina",
+    "transportadora": "Andreani",
+    "enlace_rastreo": "https://www.andreani.com/seguimiento?guia=20022",
+    "cliente": "Pablo Ruiz",
+    "peso_kg": 1.6,
+    "valor_usd": 55.75,
+    "productos": [
+      { "nombre": "Auriculares alámbricos", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "2025-09-24",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20023",
+    "estado": "Preparando documentación",
+    "fecha_estimada": "2025-10-07",
+    "destino": "La Paz, Bolivia",
+    "transportadora": "FedEx",
+    "enlace_rastreo": "https://www.fedex.com/fedextrack/?trknbr=20023",
+    "cliente": "Sofía Morales",
+    "peso_kg": 2.5,
+    "valor_usd": 98.3,
+    "productos": [
+      { "nombre": "Set de maquillaje", 
+        "categoria": "Higiene", 
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20024",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-05",
+    "destino": "Asunción, Paraguay",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20024",
+    "cliente": "Fernando Cabrera",
+    "peso_kg": 2.2,
+    "valor_usd": 87.9,
+    "productos": [
+      { "nombre": "Teclado mecánico", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20025",
+    "estado": "En preparación",
+    "fecha_estimada": "2025-10-03",
+    "destino": "Madrid, España",
+    "transportadora": "Correos España",
+    "enlace_rastreo": "https://www.correos.es/es/es/herramientas/localizador/envios?tracking-number=20025",
+    "cliente": "Marta Pérez",
+    "peso_kg": 2.4,
+    "valor_usd": 130.0,
+    "productos": [
+      { "nombre": "Bolso de cuero", 
+        "categoria": "Accesorios", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20026",
+    "estado": "En tránsito",
+    "fecha_estimada": "2025-10-04",
+    "destino": "Lisboa, Portugal",
+    "transportadora": "CTT",
+    "enlace_rastreo": "https://www.ctt.pt/feapl_2/app/open/objectSearch/ctt/20026",
+    "cliente": "André Silva",
+    "peso_kg": 1.8,
+    "valor_usd": 90.5,
+    "productos": [
+      { "nombre": "Auriculares inalámbricos", 
+        "categoria": "Electrónica", 
+        "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20027",
+    "estado": "Entregado",
+    "fecha_estimada": "2025-09-23",
+    "destino": "París, Francia",
+    "transportadora": "La Poste",
+    "enlace_rastreo": "https://www.laposte.fr/outils/suivre-vos-envois?code=20027",
+    "cliente": "Claire Dubois",
+    "peso_kg": 1.5,
+    "valor_usd": 75.0,
+    "productos": [
+      { "nombre": "Vino tinto reserva", 
+        "categoria": "Alimento perecedero", 
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "2025-09-23",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20028",
+    "estado": "Listo para recoger",
+    "fecha_estimada": "2025-09-30",
+    "destino": "Roma, Italia",
+    "transportadora": "Poste Italiane",
+    "enlace_rastreo": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/20028",
+    "cliente": "Giovanni Rossi",
+    "peso_kg": 2.0,
+    "valor_usd": 65.0,
+    "productos": [
+      { "nombre": "Camisa lino", 
+      "categoria": "Ropa", 
+      "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": "Sucursal Central"
+  },
+  {
+    "tracking_number": "20029",
+    "estado": "En aduana",
+    "fecha_estimada": "2025-10-06",
+    "destino": "Berlín, Alemania",
+    "transportadora": "DHL",
+    "enlace_rastreo": "https://www.dhl.com/track?num=20029",
+    "cliente": "Hans Müller",
+    "peso_kg": 3.0,
+    "valor_usd": 160.0,
+    "productos": [
+      { "nombre": "Set de cuchillos", 
+      "categoria": "Hogar", 
+      "dev_aceptada": true }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  },
+  {
+    "tracking_number": "20030",
+    "estado": "Pendiente de envío",
+    "fecha_estimada": "2025-10-08",
+    "destino": "Tokio, Japón",
+    "transportadora": "Japan Post",
+    "enlace_rastreo": "https://trackings.post.japanpost.jp/services/srv/search/direct?reqCodeNo1=20030",
+    "cliente": "Akira Tanaka",
+    "peso_kg": 1.9,
+    "valor_usd": 145.0,
+    "productos": [
+      { "nombre": "Té verde premium", 
+        "categoria": "Alimento perecedero", 
+        "dev_aceptada": false }
+    ],
+    "fecha_entrega_real": "",
+    "motivo_retraso": "",
+    "motivo_cancelacion": "",
+    "punto_retiro": ""
+  }    
+]
