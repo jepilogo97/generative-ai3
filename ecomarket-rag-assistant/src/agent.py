@@ -1,267 +1,304 @@
 """
-Agente Proactivo de Devoluciones - EcoMarket
-Implementa el agente usando LangChain con capacidad de razonamiento y uso de herramientas
+Agente Simplificado - EcoMarket
 """
 
 import os
-from typing import Dict, Any, List, Optional
-from langchain.agents import AgentExecutor, create_react_agent
+import re
+from typing import Dict, Any
 from langchain_community.chat_models import ChatOllama
-from langchain.prompts import PromptTemplate
-from langchain.schema import AgentAction, AgentFinish
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from pathlib import Path
 import tomllib
 
-# Importar las herramientas
-from agent_tools import TOOLS
+from agent_tools import (
+    consultar_estado_pedido,
+    verificar_elegibilidad_producto,
+    generar_etiqueta_devolucion
+)
 
-# Configuración de rutas
+# Configuración
 BASE = Path(__file__).resolve().parents[1]
 SETTINGS = BASE / "src" / "settings.toml"
 ARTIFACTS = BASE / "artifacts" / "faiss_index"
 
-# Cargar configuración
 with open(SETTINGS, "rb") as f:
     cfg = tomllib.load(f)
 
 
 class EcoMarketAgent:
     """
-    Agente proactivo que maneja consultas de seguimiento y devoluciones.
-    Combina RAG para consultas informativas y herramientas para acciones operativas.
+    Agente simplificado que NO usa ReAct.
     """
     
     def __init__(self):
-        """Inicializa el agente con LLM, herramientas y RAG"""
-        
-        # Configurar LLM con parámetros optimizados para velocidad
         self.llm = ChatOllama(
             model=cfg["model"]["name"],
             temperature=0.2,
-            num_ctx=2048,      # ⬇️ Reducido de 4096 (menos memoria, más rápido)
-            num_batch=128,     # ⬆️ Aumentado para procesamiento paralelo
-            num_thread=4,      # Usar múltiples hilos
-            repeat_penalty=1.1,
+            num_ctx=1024,
             base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
         )
         
-        # Configurar embeddings y retriever para RAG
+        # Setup RAG
         emb = HuggingFaceEmbeddings(
             model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             model_kwargs={"device": "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
-        
         db = FAISS.load_local(str(ARTIFACTS), emb, allow_dangerous_deserialization=True)
         self.retriever = db.as_retriever(search_kwargs={"k": 3})
-        
-        # Crear el prompt del agente con formato ReAct
-        self.prompt = self._create_agent_prompt()
-        
-        # Crear el agente
-        self.agent = create_react_agent(
-            llm=self.llm,
-            tools=TOOLS,
-            prompt=self.prompt
-        )
-        
-        # Crear el executor del agente con límites más estrictos
-        self.agent_executor = AgentExecutor(
-            agent=self.agent,
-            tools=TOOLS,
-            verbose=True,
-            max_iterations=3,  # ✅ Reducido de 5 a 3 para evitar bucles
-            handle_parsing_errors=True,
-            return_intermediate_steps=True
-            # Removido early_stopping_method (no compatible con todas las versiones)
-        )
     
-    def _create_agent_prompt(self) -> PromptTemplate:
-        """Crea el prompt del agente siguiendo el formato ReAct"""
+    def _extraer_datos_pedido(self, query: str) -> Dict[str, str]:
+        """Extrae order_id y product_id del texto usando regex"""
         
-        template = """Eres un agente virtual de servicio al cliente de EcoMarket, especializado en seguimiento de pedidos y gestión de devoluciones.
-
-⚠️ REGLA CRÍTICA: SOLO usa información que provenga de pedidos.json o del contexto RAG. NUNCA inventes datos.
-
-**FUENTE DE VERDAD:**
-- Todos los datos de pedidos están en el archivo pedidos.json
-- Cada pedido tiene: tracking_number, estado, fecha_estimada, destino, transportadora, cliente, productos
-- Cada producto tiene: nombre, categoria, dev_aceptada (true/false)
-- SOLO estos datos existen - no asumas ni inventes nada más
-
-**REGLA FUNDAMENTAL DE USO DE HERRAMIENTAS:**
-🚫 NUNCA uses herramientas si falta order_id O product_id
-✅ SOLO usa herramientas cuando tengas AMBOS datos explícitamente
-
-Tu objetivo es ayudar a los clientes de manera proactiva y eficiente:
-
-**CAPACIDADES:**
-1. Consultar estado de pedidos en tiempo real (desde pedidos.json)
-2. Verificar elegibilidad de productos para devolución (basado en dev_aceptada del JSON)
-3. Generar etiquetas de devolución (solo si el producto existe y es elegible)
-4. Proporcionar información de políticas y procedimientos
-
-**HERRAMIENTAS DISPONIBLES:**
-{tools}
-
-**NOMBRES DE HERRAMIENTAS:** {tool_names}
-
-**PROTOCOLO DE DECISIÓN - SIGUE ESTO ESTRICTAMENTE:**
-
-PASO 1: ANALIZAR LA CONSULTA
-- ¿Menciona un número de pedido específico? (ej: 20001, 20007)
-- ¿Menciona un producto específico? (ej: "Auriculares Bluetooth", "Juego de cubiertos")
-
-PASO 2: DECIDIR ACCIÓN
-┌─────────────────────────────────────────────────────────────┐
-│ SI falta order_id O product_id → NO USAR HERRAMIENTAS      │
-│ Ir directo a Final Answer solicitando los datos faltantes  │
-└─────────────────────────────────────────────────────────────┘
-
-PASO 3: SOLO SI TIENES AMBOS DATOS → USAR HERRAMIENTAS
-1. consultar_estado_pedido → verificar existencia
-2. verificar_elegibilidad_producto → validar política  
-3. generar_etiqueta_devolucion → crear RMA
-
-**EJEMPLOS DE ANÁLISIS:**
-
-┌─────────────────────────────────────────────────────────────┐
-│ EJEMPLO 1: SIN DATOS SUFICIENTES                           │
-└─────────────────────────────────────────────────────────────┘
-Input: "quiero devolver mi pedido"
-Thought: La consulta NO incluye order_id ni product_id. NO puedo usar herramientas.
-Final Answer: Para ayudarte con la devolución, necesito:
-- Número de pedido (ejemplo: 20001)
-- Nombre del producto que deseas devolver
-
-¿Me proporcionas esta información?
-
-┌─────────────────────────────────────────────────────────────┐
-│ EJEMPLO 2: SOLO PREGUNTA GENERAL                           │
-└─────────────────────────────────────────────────────────────┘
-Input: "¿cómo funciona la devolución?"
-Thought: Pregunta informativa general, NO usar herramientas.
-Final Answer: Las devoluciones en EcoMarket funcionan así:
-1. Tienes 30 días desde la entrega
-2. El producto debe estar en su empaque original
-3. Algunos productos no aceptan devolución (alimentos perecederos, higiene)
-
-Para iniciar una devolución específica, necesito tu número de pedido.
-
-┌─────────────────────────────────────────────────────────────┐
-│ EJEMPLO 3: CON DATOS COMPLETOS - USAR HERRAMIENTAS         │
-└─────────────────────────────────────────────────────────────┘
-Input: "Quiero devolver el Juego de cubiertos del pedido 20007"
-Thought: Tengo order_id=20007 y product_id="Juego de cubiertos". Puedo usar herramientas.
-Action: consultar_estado_pedido
-Action Input: {{"order_id": "20007", "product_id": "Juego de cubiertos"}}
-Observation: {{"existe": true, "fue_entregado": true, ...}}
-Thought: Pedido existe y fue entregado, verificar elegibilidad.
-Action: verificar_elegibilidad_producto
-Action Input: {{"order_id": "20007", "product_id": "Juego de cubiertos", ...}}
-[... continúa con las herramientas ...]
-
-**VALIDACIÓN DE DATOS:**
-- Nombres de productos deben ser EXACTOS
-- Tracking numbers deben ser exactos
-- Si falta información, SOLICÍTALA antes de usar herramientas
-
-**CONTEXTO RAG (políticas y datos generales):**
-{context}
-
-**PREGUNTA DEL CLIENTE:**
-{input}
-
-**HISTORIAL DE ACCIONES:**
-{agent_scratchpad}
-
-Recuerda: 
-🚫 NO usar herramientas sin order_id Y product_id
-✅ Solicitar datos faltantes en Final Answer directamente"""
+        # Buscar número de pedido (5 dígitos)
+        numeros = re.findall(r'\b(\d{5})\b', query)
+        order_id = numeros[0] if numeros else None
         
-        return PromptTemplate(
-            input_variables=["tools", "tool_names", "input", "agent_scratchpad", "context"],
-            template=template
-        )
+        # Buscar nombre de producto
+        product_id = None
+        
+        # Patrones para extraer nombre de producto
+        patterns = [
+            r'devolver (?:el |la |los |las )?([A-Za-zÁ-úñÑ\s]+?)(?:\s+del|\s+de|\s+pedido|\s+$)',
+            r'producto ([A-Za-zÁ-úñÑ\s]+?)(?:\s+del|\s+de|\s+pedido|\s+$)',
+            r'(?:el |la |los |las )([A-Za-zÁ-úñÑ\s]+?)(?:\s+del|\s+de|\s+pedido)',
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, query, re.IGNORECASE)
+            if match:
+                product_id = match.group(1).strip()
+                break
+        
+        return {"order_id": order_id, "product_id": product_id}
     
-    def _get_rag_context(self, query: str) -> str:
-        """Obtiene contexto relevante del sistema RAG"""
+    def _es_consulta_informativa(self, query: str) -> bool:
+        """Detecta si es una pregunta general (no acción)"""
+        palabras_pregunta = [
+            "cómo", "como", "qué", "que", "cuál", "cual", 
+            "cuándo", "cuando", "política", "plazo", "puedo"
+        ]
+        query_lower = query.lower()
+        
+        # Si tiene palabra de pregunta Y NO tiene número de pedido, es informativa
+        tiene_pregunta = any(palabra in query_lower for palabra in palabras_pregunta)
+        numeros = re.findall(r'\b(\d{5})\b', query)
+        
+        return tiene_pregunta and len(numeros) == 0
+    
+    def _responder_informativa(self, query: str) -> str:
+        """Responde preguntas generales usando RAG"""
         try:
             docs = self.retriever.get_relevant_documents(query)
-            context = "\n\n".join([
-                f"Fragmento {i+1}: {doc.page_content}"
-                for i, doc in enumerate(docs)
-            ])
-            return context
+            context = "\n".join([doc.page_content for doc in docs[:2]])
+            
+            prompt = f"""Responde esta pregunta de forma clara y concisa basándote en el contexto.
+
+Contexto:
+{context}
+
+Pregunta: {query}
+
+Respuesta:"""
+            
+            response = self.llm.invoke(prompt)
+            return response.content if hasattr(response, 'content') else str(response)
         except Exception as e:
-            print(f"Error obteniendo contexto RAG: {e}")
-            return "No hay contexto adicional disponible."
+            return f"Error obteniendo información: {str(e)}"
     
     def run(self, query: str) -> Dict[str, Any]:
-        """
-        Ejecuta el agente con una consulta del usuario.
+        """Ejecuta el agente con lógica simplificada"""
         
-        Args:
-            query: Consulta del usuario
-            
-        Returns:
-            Dict con la respuesta y metadatos del proceso
-        """
+        # 1. Detectar si es consulta informativa
+        if self._es_consulta_informativa(query):
+            response = self._responder_informativa(query)
+            return {
+                "success": True,
+                "response": response,
+                "used_tools": [],
+                "intermediate_steps": []
+            }
+        
+        # 2. Extraer datos del pedido
+        datos = self._extraer_datos_pedido(query)
+        order_id = datos["order_id"]
+        product_id = datos["product_id"]
+        
+        print(f"🔍 Datos extraídos: order_id={order_id}, product_id={product_id}")
+        
+        # 3. Si faltan datos, solicitarlos
+        if not order_id:
+            return {
+                "success": True,
+                "response": """Para ayudarte necesito el **número de pedido**.
+
+Ejemplo: "Quiero devolver el Perfume floral del pedido 20002"
+
+¿Cuál es tu número de pedido?""",
+                "used_tools": [],
+                "intermediate_steps": []
+            }
+        
+        if not product_id:
+            # Si solo tiene order_id, buscar productos del pedido
+            try:
+                estado = consultar_estado_pedido.invoke({"order_id": order_id})
+                if estado.get("existe"):
+                    productos = estado.get("productos", [])
+                    productos_str = "\n".join([f"  • {p}" for p in productos])
+                    return {
+                        "success": True,
+                        "response": f"""Encontré el pedido {order_id}. ¿Cuál producto deseas devolver?
+
+Productos en este pedido:
+{productos_str}
+
+Por favor especifica el nombre del producto.""",
+                        "used_tools": ["consultar_estado_pedido"],
+                        "intermediate_steps": [estado]
+                    }
+                else:
+                    return {
+                        "success": True,
+                        "response": f"No encontré el pedido {order_id}. Por favor verifica el número.",
+                        "used_tools": [],
+                        "intermediate_steps": []
+                    }
+            except Exception as e:
+                return {
+                    "success": False,
+                    "response": f"Error consultando pedido: {str(e)}",
+                    "used_tools": [],
+                    "intermediate_steps": []
+                }
+        
+        # 4. Ejecutar flujo de devolución con datos completos
         try:
-            # Obtener contexto RAG
-            context = self._get_rag_context(query)
+            print(f"✅ Iniciando flujo de devolución: {order_id} / {product_id}")
             
-            # Ejecutar el agente
-            result = self.agent_executor.invoke({
-                "input": query,
-                "context": context
+            # Paso 1: Consultar estado del pedido
+            estado = consultar_estado_pedido.invoke({
+                "order_id": order_id,
+                "product_id": product_id
             })
             
-            # Formatear respuesta
-            response = {
+            if not estado.get("existe"):
+                return {
+                    "success": True,
+                    "response": f"❌ No encontré el pedido {order_id} en nuestros registros.",
+                    "used_tools": ["consultar_estado_pedido"],
+                    "intermediate_steps": [estado]
+                }
+            
+            if not estado.get("producto_existe"):
+                productos = estado.get("productos", [])
+                productos_str = "\n".join([f"  • {p}" for p in productos])
+                return {
+                    "success": True,
+                    "response": f"""❌ El producto "{product_id}" no está en el pedido {order_id}.
+
+Productos disponibles:
+{productos_str}
+
+¿Cuál deseas devolver?""",
+                    "used_tools": ["consultar_estado_pedido"],
+                    "intermediate_steps": [estado]
+                }
+            
+            if not estado.get("fue_entregado"):
+                return {
+                    "success": True,
+                    "response": f"""⏳ El pedido {order_id} está en estado: **{estado.get('estado_actual')}**
+
+Para iniciar una devolución, el pedido debe estar entregado primero.
+
+📅 Fecha estimada de entrega: {estado.get('fecha_estimada', 'No disponible')}
+
+Una vez lo recibas, podrás solicitar la devolución dentro de los 30 días siguientes.""",
+                    "used_tools": ["consultar_estado_pedido"],
+                    "intermediate_steps": [estado]
+                }
+            
+            # Paso 2: Verificar elegibilidad
+            elegibilidad = verificar_elegibilidad_producto.invoke({
+                "order_id": order_id,
+                "product_id": product_id,
+                "motivo_devolucion": "Solicitud del cliente",
+                "fecha_entrega": estado.get("fecha_entrega"),
+                "estado_producto": "sellado"
+            })
+            
+            if not elegibilidad.get("es_elegible"):
+                pasos = elegibilidad.get('pasos_siguientes', [])
+                pasos_str = "\n".join([f"• {p}" for p in pasos]) if pasos else ""
+                
+                return {
+                    "success": True,
+                    "response": f"""❌ **Devolución No Permitida**
+
+{elegibilidad.get('razon')}
+
+{pasos_str}""",
+                    "used_tools": ["consultar_estado_pedido", "verificar_elegibilidad_producto"],
+                    "intermediate_steps": [estado, elegibilidad]
+                }
+            
+            # Paso 3: Generar etiqueta de devolución
+            etiqueta = generar_etiqueta_devolucion.invoke({
+                "order_id": order_id,
+                "product_id": product_id,
+                "categoria_proceso": elegibilidad.get("categoria_proceso"),
+                "motivo_devolucion": "Solicitud del cliente"
+            })
+            
+            # Respuesta final exitosa
+            response = f"""✅ **¡Devolución Aprobada!**
+
+📋 **Número de caso:** {etiqueta.get('rma_id')}
+📦 **Producto:** {product_id}
+🚚 **Transportadora:** {etiqueta.get('transportadora')}
+⏱️ **Tiempo estimado de recolección:** {etiqueta.get('tiempo_estimado_recoleccion')}
+
+📝 **Instrucciones:**
+{etiqueta.get('instrucciones_cliente')}
+
+🔗 **Etiqueta de devolución:**
+{etiqueta.get('etiqueta_pdf_url')}
+
+💰 Recibirás tu reembolso en 5-7 días hábiles después de que recibamos el producto.
+
+¿Necesitas ayuda con algo más?"""
+            
+            return {
                 "success": True,
-                "response": result.get("output", ""),
-                "intermediate_steps": result.get("intermediate_steps", []),
+                "response": response,
                 "used_tools": [
-                    step[0].tool for step in result.get("intermediate_steps", [])
-                    if isinstance(step[0], AgentAction)
-                ]
+                    "consultar_estado_pedido",
+                    "verificar_elegibilidad_producto", 
+                    "generar_etiqueta_devolucion"
+                ],
+                "intermediate_steps": [estado, elegibilidad, etiqueta]
             }
             
-            return response
-            
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return {
                 "success": False,
-                "response": f"Disculpa, encontré un error procesando tu solicitud: {str(e)}",
+                "response": f"❌ Error procesando la solicitud: {str(e)}",
                 "error": str(e),
-                "intermediate_steps": [],
-                "used_tools": []
+                "used_tools": [],
+                "intermediate_steps": []
             }
     
     def format_response(self, result: Dict[str, Any]) -> str:
-        """
-        Formatea la respuesta del agente de manera amigable.
-        
-        Args:
-            result: Resultado de la ejecución del agente
-            
-        Returns:
-            Respuesta formateada para mostrar al usuario
-        """
+        """Formatea la respuesta para el usuario"""
         response = result.get("response", "")
         
-        # Si hubo error, mostrar mensaje amigable
         if not result.get("success", False):
-            return f"""❌ **Disculpa, hubo un problema**
-
-{response}
-
-Por favor, intenta de nuevo o contacta a nuestro equipo de soporte."""
+            return f"❌ **Error**\n\n{response}\n\nPor favor intenta de nuevo o contacta a soporte."
         
-        # Si usó herramientas, agregar badge
         used_tools = result.get("used_tools", [])
         if used_tools:
             tools_str = ", ".join(used_tools)
@@ -270,7 +307,6 @@ Por favor, intenta de nuevo o contacta a nuestro equipo de soporte."""
         return response
 
 
-# Función helper para usar en la interfaz
 def create_agent() -> EcoMarketAgent:
-    """Crea y retorna una instancia del agente"""
+    """Crea instancia del agente simplificado"""
     return EcoMarketAgent()
