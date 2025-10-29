@@ -8,7 +8,7 @@ SERVICE        ?= pedidos-app
 OLLAMA_NAME    ?= ollama
 STREAMLIT_PORT ?= 8501
 OLLAMA_PORT    ?= 11434
-MODEL_NAME     ?= llama3.2:3b
+MODEL_NAME     ?= llama3.2:1b
 PY             ?= python
 COMPOSE        := docker compose
 

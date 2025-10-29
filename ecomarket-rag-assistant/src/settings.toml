@@ -1,5 +1,5 @@
 [model]
-name = "llama3"
+name = "llama3.2:1b"
 temperature = 0.2
 
 [prompts]

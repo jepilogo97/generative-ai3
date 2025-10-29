@@ -1,5 +1,4 @@
 from langchain.prompts import ChatPromptTemplate
-# ⚠️ usa HuggingFaceEmbeddings (más robusto) o fija device en SentenceTransformerEmbeddings
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.chat_models import ChatOllama
