@@ -42,13 +42,17 @@ def get_agent():
     """Crea y cachea el agente para reutilizarlo entre peticiones"""
     return create_agent()
 
-# Inicializar agente con cache
-try:
-    agent = get_agent()
-    st.session_state.agent_ready = True
-except Exception as e:
-    st.error(f"Error inicializando agente: {e}")
-    st.session_state.agent_ready = False
+# ✨ NUEVO: Mantener agente en session_state
+if 'agent' not in st.session_state:
+    try:
+        st.session_state.agent = get_agent()
+        st.session_state.agent_ready = True
+    except Exception as e:
+        st.error(f"Error inicializando agente: {e}")
+        st.session_state.agent_ready = False
+
+# Usar el agente desde session_state
+agent = st.session_state.agent
 
 # UI Principal
 render_chat_sidebar()
@@ -60,17 +64,23 @@ st.caption("Agente inteligente con capacidad de ejecutar acciones operativas")
 tab1, tab2, tab3 = st.tabs(["💬 Chat", "⚙️ Configuración", "ℹ️ Información"])
 
 with tab1:
-    # Historial de chat
-    render_chat_history()
     chat_manager = ChatManager()
     
-    # Input del usuario
+    # Contenedor para el historial (con scroll)
+    chat_container = st.container()
+    
+    with chat_container:
+        render_chat_history()
+    
+    # Separador visual
+    st.divider()
+    
+    # Input siempre al final
     user_query = st.chat_input(
-        placeholder="Ej: Quiero devolver el producto del pedido 20001"
+        placeholder="Ej: ¿Cuál es el estado del pedido 20001?"
     )
     
     if user_query:
-        # Guardar mensaje del usuario
         chat_manager.save_message("user", user_query)
         
         with st.chat_message("user"):
@@ -80,35 +90,28 @@ with tab1:
             if not st.session_state.get('agent_ready', False):
                 st.error("El agente no está listo. Por favor recarga la página.")
             else:
-                # ⚡ Mostrar progreso detallado
                 progress_text = st.empty()
                 progress_bar = st.progress(0)
                 
                 try:
-                    # Paso 1: Recuperar contexto
                     progress_text.text("🔍 Buscando información relevante...")
                     progress_bar.progress(25)
                     
-                    # Paso 2: Ejecutar agente
                     progress_text.text("🤔 Analizando consulta...")
                     progress_bar.progress(50)
                     
                     result = agent.run(user_query)
                     
-                    # Paso 3: Formatear respuesta
                     progress_text.text("✍️ Preparando respuesta...")
                     progress_bar.progress(75)
                     
                     formatted_response = agent.format_response(result)
                     
-                    # Limpiar progreso
                     progress_text.empty()
                     progress_bar.empty()
                     
-                    # Mostrar respuesta
                     st.markdown(formatted_response)
                     
-                    # Mostrar debug info si se usaron herramientas
                     if result.get("used_tools"):
                         with st.expander("🔍 Ver detalles de ejecución"):
                             st.json({
@@ -117,7 +120,6 @@ with tab1:
                                 "tiempo_aproximado": "~3-5 segundos"
                             })
                     
-                    # Guardar respuesta
                     chat_manager.save_message("assistant", formatted_response)
                     
                 except Exception as e:
